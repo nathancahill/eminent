@@ -1,0 +1,36 @@
+{
+  "name": "kahlua",
+  "version": "0.0.1",
+  "description": "git remote add origin git@github.com:nathancahill/kahlua.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathancahill/kahlua.git"
+  },
+  "keywords": [
+    "testing",
+    "assert",
+    "assertion",
+    "test",
+    "dom",
+    "emmet"
+  ],
+  "author": "Nathan Cahill <nathan@nathancahill.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nathancahill/kahlua/issues"
+  },
+  "homepage": "https://github.com/nathancahill/kahlua#readme",
+  "devDependencies": {
+    "babel": "^6.0.12",
+    "babel-core": "^5.8.29",
+    "mocha": "^2.3.3",
+    "virtual-dom": "^2.1.1"
+  },
+  "dependencies": {
+    "emmet": "^1.3.1"
+  }
+}
