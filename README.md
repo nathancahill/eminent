@@ -1,4 +1,4 @@
-## Kahlua
+## Eminent
 
 DOM assertions with [Emmet syntax](http://docs.emmet.io/abbreviations/) for JavaScript testing.
 
@@ -15,5 +15,5 @@ let html = `
   </table>
 `
 
-kahlua.domIsLike(html, 'table>tbody>tr>td*3')
+eminent.domIsLike(html, 'table>tbody>tr>td*3')
 ```
