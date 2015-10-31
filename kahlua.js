@@ -1,20 +1,35 @@
 
-import parser from 'emmet/lib/parser/abbreviation';
-import tabStops from 'emmet/lib/assets/tabStops';
+import parser from 'emmet/lib/parser/abbreviation'
+import jsdom from 'jsdom'
 
-import h from 'virtual-dom/h'
 import diff from 'virtual-dom/diff'
+
+
+let compareNode = (node, tree) => {
+    let match = true;
+
+    // Compare attributes/text
+    //
+    // if (tree.className != node.className) {
+    //     return false;
+    // }
+
+    if (node.childNodes.length !== tree.children.length) return false;
+
+    for (let i = 0; i < node.childNodes.length; i++) {
+        match = match && compareNode(node.childNodes[i], tree.children[i]);
+    };
+
+    return match
+}
 
 
 let kahlua = {
     domIsLike: (dom, abbr) => {
-        return parser.expand(abbr, {profile: 'plain'})
-    },
-    domIsEqual: (dom, abbr) => {
-        let a = h(dom);
-        let b = h(parser.expand(abbr, {profile: 'plain'}));
+        let node = jsdom.jsdom(dom).body;
+        let tree = parser.parse(abbr, {profile: 'plain'});
 
-        return dom === parser.expand(abbr, {profile: 'plain'})
+        return compareNode(node, tree);
     }
 };
 
