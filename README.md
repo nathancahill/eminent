@@ -1,6 +1,8 @@
 ## Eminent
 
-DOM assertions with [Emmet syntax](http://docs.emmet.io/abbreviations/) for JavaScript testing.
+[![Build Status](https://travis-ci.org/nathancahill/eminent.svg?branch=master)](https://travis-ci.org/nathancahill/eminent)
+
+Eminent is a DOM assertions library with [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/) for JavaScript testing.
 
 ```javascript
 let html = `
@@ -16,4 +18,10 @@ let html = `
 `
 
 eminent.domIsLike(html, 'table>tbody>tr>td*3')
+```
+
+### Installation
+
+```
+$ npm install eminent
 ```

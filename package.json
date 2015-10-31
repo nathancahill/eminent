@@ -1,8 +1,8 @@
 {
   "name": "eminent",
   "version": "0.0.1",
-  "description": "git remote add origin git@github.com:nathancahill/eminent.git",
-  "main": "index.js",
+  "description": "A DOM assertions library with Emmet syntax for JavaScript testing",
+  "main": "lib/eminent.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register",
     "build": "babel src/ -d lib/"
