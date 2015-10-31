@@ -1,6 +1,6 @@
 ## Kahlua
 
-DOM structure assertions for JavaScript testing.
+DOM assertions with [Emmet syntax](http://docs.emmet.io/abbreviations/) for JavaScript testing.
 
 ```javascript
 let html = `
