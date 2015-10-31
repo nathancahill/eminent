@@ -2,7 +2,7 @@
 
 DOM structure assertions for JavaScript testing.
 
-```
+```javascript
 let html = `
   <table>
     <tbody>
@@ -14,5 +14,6 @@ let html = `
     </tbody>
   </table>
 `
-```
 
+kahlua.domIsLike(html, 'table>tbody>tr>td*3')
+```
