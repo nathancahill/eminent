@@ -73,6 +73,14 @@ describe('domIsLike', () => {
             eminent.domIsLike(dom, 'table>tbody>tr*2>td*3')
         })
     });
+
+    it('passes when dom has content but abbreviation does not', () => {
+        let dom = `
+            <div>Hello</div>
+        `
+
+        eminent.domIsLike(dom, 'div')
+    });
 });
 
 describe('domAttrsIs', () => {

@@ -5,6 +5,29 @@ import jsdom from 'jsdom'
 import assert from 'assert'
 
 
+let getNodeHTML = (node, children) => {
+    if (!children) {
+        node.innerHTML = '';
+    } else {
+        for (var i = 0; i < node._childNodes.length; i++) {
+            node._childNodes[i].innerHTML = '';
+        };
+    }
+
+    return node.outerHTML;
+}
+
+let getTreeHTML = (tree, children) => {
+    let abbr = tree.abbreviation;
+
+    if (children) {
+        let childrenAbbrs = tree.children.map(child => child.abbreviation).join('+');
+        abbr = abbr + '>' + childrenAbbrs;
+    }
+
+    return parser.expand(abbr, {profile: 'plain'});
+}
+
 /**
  * Compare a jsdom node and a Emmet tree.
  * 
@@ -13,23 +36,25 @@ import assert from 'assert'
  * @param  {boolean} hasAttrs - Compare attribute names
  * @param  {boolean} isAttrs - Compare attribute values
  * @param  {boolean} isContent - Compare content
- * @return {boolean}
  */
 let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
     let i,
+        nodeChildren = node._childNodes,
         treeChildren = tree.children,
-        isText = node._localName === undefined,
-        match = true;
+        isText = node._localName === undefined;
 
     if (hasAttrs || isAttrs) {
         for (i = 0; i < tree._attributes.length; i++) {
+            let attrName = tree._attributes[i].name,
+                attrValue = tree._attributes[i].value;
+
             if (hasAttrs) {
-                if (!node.hasAttribute(tree._attributes[i].name)) {
-                    return false
+                if (!node.hasAttribute(attrName)) {
+                    assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Attribute '${attrName}' does not exist`, '!=')
                 }
             } else if (isAttrs) {
-                if (node.getAttribute(tree._attributes[i].name) !== tree._attributes[i].value) {
-                    return false
+                if (node.getAttribute(attrName) !== attrValue) {
+                    assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Value of attribute '${attrName}' is not '${attrValue}'`, '!=')
                 }
             }
         };
@@ -42,7 +67,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
      * text as a child node. To compare the two trees, prepend a text node to
      * Emmet tree children.
      */
-    if (tree.content !== '' && tree._name !== '') {
+    if (isContent && tree.content !== '' && tree._name !== '') {
         treeChildren.unshift({
             content: tree.content,
             children: [],
@@ -51,24 +76,35 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
     }
 
     /*
+     * Discard text child nodes if not checking for content.
+     */
+    if (!isContent) {
+        nodeChildren = nodeChildren.filter(child => child._localName !== undefined);
+    }
+
+    /*
      * If the node is a text node, there's no need to compare any further down
      * the tree.
      */
     if (isContent && isText) {
-        return node.textContent.trim() == tree.content.trim();
+        if (node.textContent.trim() === tree.content.trim()) {
+            return
+        } else {
+            assert.fail(node.textContent.trim(), tree.content.trim(), `DOM element content does not match`, '!=')
+        }
     }
 
     /*
      * If there are different numbers of children, stop comparing before
      * starting a recursive loop.
      */
-    if (node._childNodes.length !== treeChildren.length) return false;
+    if (nodeChildren.length !== treeChildren.length) {
+        assert.fail(getNodeHTML(node, true), getTreeHTML(tree, true), `Different number of DOM child nodes`, '!=')
+    }
 
-    for (i = 0; i < node._childNodes.length; i++) {
-        match = match && compareNode(node._childNodes[i], treeChildren[i], hasAttrs, isAttrs, isContent);
+    for (i = 0; i < nodeChildren.length; i++) {
+        compareNode(nodeChildren[i], treeChildren[i], hasAttrs, isAttrs, isContent);
     };
-
-    return match
 }
 
 /**
@@ -79,10 +115,9 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
  * @return {boolean}
  */
 export var domIs = (dom, abbr) => {
-    let tree = parser.expand(abbr, {profile: 'plain'}),
-        result = dom === tree;
+    let tree = parser.expand(abbr, {profile: 'plain'});
 
-    if (!result) {
+    if (dom !== tree) {
         assert.fail(dom, tree, 'DOM does not match Emmet abbreviation', '=')
     }
 }
@@ -97,12 +132,9 @@ export var domIs = (dom, abbr) => {
  */
 export var domIsLike = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
-        tree = parser.parse(abbr, {profile: 'plain'}),
-        result = compareNode(node, tree, false, false, false);
+        tree = parser.parse(abbr, {profile: 'plain'});
 
-    if (!result) {
-        assert.fail(dom, tree, 'DOM does not match Emmet abbreviation', '=')
-    }
+    compareNode(node, tree, false, false, false);
 }
 
 /**
@@ -115,12 +147,9 @@ export var domIsLike = (dom, abbr) => {
  */
 export var domAttrsIs = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
-        tree = parser.parse(abbr, {profile: 'plain'}),
-        result = compareNode(node, tree, false, true, false);
+        tree = parser.parse(abbr, {profile: 'plain'});
 
-    if (!result) {
-        assert.fail(dom, tree, 'DOM does not match Emmet abbreviation', '=')
-    }
+    compareNode(node, tree, false, true, false);
 }
 
 /**
@@ -133,12 +162,9 @@ export var domAttrsIs = (dom, abbr) => {
  */
 export var domAttrsIsLike = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
-        tree = parser.parse(abbr, {profile: 'plain'}),
-        result = compareNode(node, tree, true, false, false);
+        tree = parser.parse(abbr, {profile: 'plain'});
 
-    if (!result) {
-        assert.fail(dom, tree, 'DOM does not match Emmet abbreviation', '=')
-    }
+    compareNode(node, tree, true, false, false);
 }
 
 /**
@@ -151,10 +177,7 @@ export var domAttrsIsLike = (dom, abbr) => {
  */
 export var domContentIs = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
-        tree = parser.parse(abbr, {profile: 'plain'}),
-        result = compareNode(node, tree, false, false, true);
+        tree = parser.parse(abbr, {profile: 'plain'});
 
-    if (!result) {
-        assert.fail(dom, tree, 'DOM does not match Emmet abbreviation', '=')
-    }
+    compareNode(node, tree, false, false, true);
 }
