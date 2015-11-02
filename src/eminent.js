@@ -5,6 +5,12 @@ import jsdom from 'jsdom'
 import assert from 'assert'
 
 
+/**
+ * @private
+ * @param  {jsdom} node - Node to parse to HTML
+ * @param  {boolean} children - Whether to include children or not
+ * @return {string}
+ */
 let getNodeHTML = (node, children) => {
     if (!children) {
         node.innerHTML = '';
@@ -17,6 +23,12 @@ let getNodeHTML = (node, children) => {
     return node.outerHTML;
 }
 
+/**
+ * @private
+ * @param  {emmet} tree - Tree to parse to HTML
+ * @param  {boolean} children - Whether to include children or not
+ * @return {string}
+ */
 let getTreeHTML = (tree, children) => {
     let abbr = tree.abbreviation;
 
@@ -30,9 +42,10 @@ let getTreeHTML = (tree, children) => {
 
 /**
  * Compare a jsdom node and a Emmet tree.
- * 
- * @param  {jsdom node} node - jsdom node
- * @param  {emmet tree} tree - Emmet tree
+ *
+ * @private
+ * @param  {jsdom} node - jsdom node
+ * @param  {emmet} tree - Emmet tree
  * @param  {boolean} hasAttrs - Compare attribute names
  * @param  {boolean} isAttrs - Compare attribute values
  * @param  {boolean} isContent - Compare content
@@ -109,7 +122,8 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
 
 /**
  * Strictly compare DOM to Emmet abbreviation.
- * 
+ *
+ * @function
  * @param  {string} dom - DOM string to 
  * @param  {string} abbr - Emmet abbreviation to compare to
  * @return {boolean}
@@ -125,7 +139,8 @@ export var domIs = (dom, abbr) => {
 /**
  * Compare DOM to Emmet abbreviation.
  * Ignores whitespace, attributes and content.
- * 
+ *
+ * @function
  * @param  {string} dom - DOM string to 
  * @param  {string} abbr - Emmet abbreviation to compare to
  * @return {boolean}
@@ -140,7 +155,8 @@ export var domIsLike = (dom, abbr) => {
 /**
  * Compare DOM to Emmet abbreviation, including attribute names and values.
  * Ignores whitespace and content.
- * 
+ *
+ * @function
  * @param  {string} dom - DOM string to 
  * @param  {string} abbr - Emmet abbreviation to compare to
  * @return {boolean}
@@ -155,7 +171,8 @@ export var domAttrsIs = (dom, abbr) => {
 /**
  * Compare DOM to Emmet abbreviation, including attribute names.
  * Ignores whitespace, attribute values and content.
- * 
+ *
+ * @function
  * @param  {string} dom - DOM string to 
  * @param  {string} abbr - Emmet abbreviation to compare to
  * @return {boolean}
@@ -170,7 +187,8 @@ export var domAttrsIsLike = (dom, abbr) => {
 /**
  * Compare DOM to Emmet abbreviation, including content.
  * Ignores whitespace, attributes and content.
- * 
+ *
+ * @function
  * @param  {string} dom - DOM string to 
  * @param  {string} abbr - Emmet abbreviation to compare to
  * @return {boolean}
