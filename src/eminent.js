@@ -54,9 +54,23 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
     let i,
         nodeChildren = node._childNodes,
         treeChildren = tree.children,
-        isText = node._localName === undefined;
+        isText = node._localName === undefined,
+        isBody = node._localName === 'body';
 
-    if (hasAttrs || isAttrs) {
+    /*
+     * If not text, compare the node names. Skip the body top level node,
+     * as the body node is equivalent to the top level of the Emmet tree.
+     */
+    if (!isText && !isBody) {
+        let nodeName = node._localName,
+            treeName = tree._name;
+
+        if (nodeName !== treeName) {
+            assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Expected '${treeName}' but got '${nodeName}'`, '!=')
+        }
+    }
+
+    if (hasAttrs || isAttrs && !isBody) {
         for (i = 0; i < tree._attributes.length; i++) {
             let attrName = tree._attributes[i].name,
                 attrValue = tree._attributes[i].value;

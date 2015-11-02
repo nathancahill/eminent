@@ -81,6 +81,18 @@ describe('domIsLike', () => {
 
         eminent.domIsLike(dom, 'div')
     });
+
+    it('throws when dom nodes are different', () => {
+        let dom = `
+            <div>
+                <span></span>
+            </div>
+        `
+
+        assert.throws(() => {
+            eminent.domIsLike(dom, 'span>div')
+        })
+    });
 });
 
 describe('domAttrsIs', () => {
