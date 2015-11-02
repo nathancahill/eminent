@@ -1,5 +1,6 @@
 
 import parser from 'emmet/lib/parser/abbreviation'
+import utils from 'emmet/lib/utils/common'
 import whitespace from 'dom-whitespace'
 import jsdom from 'jsdom'
 import assert from 'assert'
@@ -94,11 +95,13 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
      * with a content attribute 'Text' with no children. jsdom trees
      * on the other hand, correctly represent the div as a parent and the
      * text as a child node. To compare the two trees, prepend a text node to
-     * Emmet tree children.
+     * Emmet tree children. The text node must handle the counter object.
      */
     if (isContent && tree.content !== '' && tree._name !== '') {
+        let value = utils.replaceCounter(tree.content, tree.counter, tree.maxCount)
+
         treeChildren.unshift({
-            content: tree.content,
+            content: value,
             children: [],
             _name: ''
         });

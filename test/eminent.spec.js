@@ -195,4 +195,28 @@ describe('domContentIs', () => {
 
         eminent.domContentIs(dom, 'div{Hello}');
     });
+
+    it('handles repeating content', () => {
+        let dom = `
+            <div>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+            </div>
+        `
+
+        eminent.domContentIs(dom, 'div>span{$}*3')
+    });
+
+    it('handles repeating content with children', () => {
+        let dom = `
+            <div>
+                <span>1<span>Hello</span></span>
+                <span>2<span>Hello</span></span>
+                <span>3<span>Hello</span></span>
+            </div>
+        `
+
+        eminent.domContentIs(dom, 'div>span{$}*3>span{Hello}')
+    });
 });
