@@ -5,7 +5,8 @@
   "main": "lib/eminent.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register",
-    "build": "babel src/ -d lib/"
+    "build": "babel src/ -d lib/",
+    "docs": "jsdoc2md --template jsdoc2md/README.hbs lib/eminent.js > README.md"
   },
   "repository": {
     "type": "git",

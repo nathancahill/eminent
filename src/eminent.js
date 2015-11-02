@@ -4,6 +4,8 @@ import whitespace from 'dom-whitespace'
 import jsdom from 'jsdom'
 import assert from 'assert'
 
+/** @module eminent */
+
 
 /**
  * @private
@@ -11,7 +13,7 @@ import assert from 'assert'
  * @param  {boolean} children - Whether to include children or not
  * @return {string}
  */
-let getNodeHTML = (node, children) => {
+let _getNodeHTML = (node, children) => {
     if (!children) {
         node.innerHTML = '';
     } else {
@@ -29,7 +31,7 @@ let getNodeHTML = (node, children) => {
  * @param  {boolean} children - Whether to include children or not
  * @return {string}
  */
-let getTreeHTML = (tree, children) => {
+let _getTreeHTML = (tree, children) => {
     let abbr = tree.abbreviation;
 
     if (children) {
@@ -66,7 +68,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
             treeName = tree._name;
 
         if (nodeName !== treeName) {
-            assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Expected '${treeName}' but got '${nodeName}'`, '!=')
+            assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Expected '${treeName}' but got '${nodeName}'`, '!=')
         }
     }
 
@@ -77,11 +79,11 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
 
             if (hasAttrs) {
                 if (!node.hasAttribute(attrName)) {
-                    assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Attribute '${attrName}' does not exist`, '!=')
+                    assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Attribute '${attrName}' does not exist`, '!=')
                 }
             } else if (isAttrs) {
                 if (node.getAttribute(attrName) !== attrValue) {
-                    assert.fail(getNodeHTML(node, false), getTreeHTML(tree, false), `Value of attribute '${attrName}' is not '${attrValue}'`, '!=')
+                    assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Value of attribute '${attrName}' is not '${attrValue}'`, '!=')
                 }
             }
         };
@@ -126,7 +128,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
      * starting a recursive loop.
      */
     if (nodeChildren.length !== treeChildren.length) {
-        assert.fail(getNodeHTML(node, true), getTreeHTML(tree, true), `Different number of DOM child nodes`, '!=')
+        assert.fail(_getNodeHTML(node, true), _getTreeHTML(tree, true), `Different number of DOM child nodes`, '!=')
     }
 
     for (i = 0; i < nodeChildren.length; i++) {
@@ -135,12 +137,22 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
 }
 
 /**
- * Strictly compare DOM to Emmet abbreviation.
+ * Strictly compare DOM to Emmet abbreviation. Not very useful as it compares
+ * whitespace as well.
  *
  * @function
- * @param  {string} dom - DOM string to 
+ * @param  {string} dom - DOM string 
  * @param  {string} abbr - Emmet abbreviation to compare to
- * @return {boolean}
+ * @throws {exception} When DOM does not strictly match the Emmet abbreviation
+ * @alias module:eminent.domIs
+ * @example
+```js
+import * as eminent from 'eminent'
+
+let html = '<div id="header"><div class="logo">Company</div></div>'
+
+eminent.domIs(html, 'div#header>div.logo{Company}')
+```
  */
 export var domIs = (dom, abbr) => {
     let tree = parser.expand(abbr, {profile: 'plain'});
@@ -155,9 +167,24 @@ export var domIs = (dom, abbr) => {
  * Ignores whitespace, attributes and content.
  *
  * @function
- * @param  {string} dom - DOM string to 
+ * @param  {string} dom - DOM string
  * @param  {string} abbr - Emmet abbreviation to compare to
- * @return {boolean}
+ * @throws {exception} When DOM does not loosely match the Emmet abbreviation
+ * @alias module:eminent.domIsLike
+ * @example
+```js
+import * as eminent from 'eminent'
+
+let html = `
+    <div id="header">
+        <div class="logo">
+            Company
+        </div>
+    </div>
+`
+
+eminent.domIsLike(html, 'div>div')
+```
  */
 export var domIsLike = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
@@ -171,9 +198,24 @@ export var domIsLike = (dom, abbr) => {
  * Ignores whitespace and content.
  *
  * @function
- * @param  {string} dom - DOM string to 
+ * @param  {string} dom - DOM string
  * @param  {string} abbr - Emmet abbreviation to compare to
- * @return {boolean}
+ * @throws {exception} When DOM does not loosely match the Emmet abbreviation, including attribute names and values.
+ * @alias module:eminent.domAttrsIs
+ * @example
+```js
+import * as eminent from 'eminent'
+
+let html = `
+    <div id="header">
+        <div class="logo">
+            Company
+        </div>
+    </div>
+`
+
+eminent.domAttrsIs(html, 'div#header>div.logo')
+```
  */
 export var domAttrsIs = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
@@ -187,9 +229,24 @@ export var domAttrsIs = (dom, abbr) => {
  * Ignores whitespace, attribute values and content.
  *
  * @function
- * @param  {string} dom - DOM string to 
+ * @param  {string} dom - DOM string
  * @param  {string} abbr - Emmet abbreviation to compare to
- * @return {boolean}
+ * @throws {exception} When DOM does not loosely match the Emmet abbreviation, including attribute names.
+ * @alias module:eminent.domAttrsIsLike
+ * @example
+```js
+import * as eminent from 'eminent'
+
+let html = `
+    <div id="header">
+        <div class="logo">
+            Company
+        </div>
+    </div>
+`
+
+eminent.domAttrsIsLike(html, 'div#id>div.class')
+```
  */
 export var domAttrsIsLike = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,
@@ -200,12 +257,27 @@ export var domAttrsIsLike = (dom, abbr) => {
 
 /**
  * Compare DOM to Emmet abbreviation, including content.
- * Ignores whitespace, attributes and content.
+ * Ignores whitespace and attributes.
  *
  * @function
- * @param  {string} dom - DOM string to 
+ * @param  {string} dom - DOM string
  * @param  {string} abbr - Emmet abbreviation to compare to
- * @return {boolean}
+ * @throws {exception} When DOM does not loosely match the Emmet abbreviation, including content.
+ * @alias module:eminent.domContentIs
+ * @example
+```js
+import * as eminent from 'eminent'
+
+let html = `
+    <div id="header">
+        <div class="logo">
+            Company
+        </div>
+    </div>
+`
+
+eminent.domContentIs(html, 'div#header>div.logo{Company}')
+```
  */
 export var domContentIs = (dom, abbr) => {
     let node = whitespace.remove(jsdom.jsdom(dom)).body,

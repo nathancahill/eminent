@@ -1,0 +1,33 @@
+## Eminent
+
+[![Build Status](https://travis-ci.org/nathancahill/eminent.svg?branch=master)](https://travis-ci.org/nathancahill/eminent)
+
+Eminent is a DOM assertions library with [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/) for JavaScript testing.
+
+```javascript
+let html = `
+  <table>
+    <tbody>
+      <tr>
+        <td>Kahlua</td>
+        <td>is</td>
+        <td>awesome</td>
+      </tr>
+    </tbody>
+  </table>
+`
+
+eminent.domIsLike(html, 'table>tbody>tr>td*3')
+```
+
+## Installation
+
+```
+$ npm install eminent
+```
+
+## API Reference
+
+{{#module name="eminent"}}
+{{>members}}
+{{/module}}
