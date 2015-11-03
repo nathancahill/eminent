@@ -131,6 +131,24 @@ describe('domAttrsIs', () => {
             eminent.domAttrsIs(dom, 'div#page>div.logo')
         }, /Value of attribute 'id' is not 'page'/)
     });
+
+    it('passes when class attributes match', () => {
+        let dom = `
+            <div class="logo  page"></div>
+        `
+
+        eminent.domAttrsIs(dom, 'div.page.logo')
+    });
+
+    it('throws when class attributes do not match', () => {
+        let dom = `
+            <div class="logo  page"></div>
+        `
+
+        assert.throws(() => {
+            eminent.domAttrsIs(dom, 'div.page.footer')
+        }, /Element does not contain class 'footer'/)
+    });
 });
 
 describe('domAttrsIsLike', () => {

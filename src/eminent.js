@@ -105,8 +105,18 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
                     assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Attribute '${attrName}' does not exist`, '!=')
                 }
             } else if (isAttrs) {
-                if (node.getAttribute(attrName) !== attrValue) {
-                    assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Value of attribute '${attrName}' is not '${attrValue}'`, '!=')
+                if (attrName === 'class') {
+                    let classNames = attrValue.split(/\s+/).filter(Boolean)
+
+                    for (let className of classNames) {
+                        if (!node.classList.contains(className)) {
+                            assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Element does not contain class '${className}'`, '!=')
+                        }
+                    }
+                } else {
+                    if (node.getAttribute(attrName) !== attrValue) {
+                        assert.fail(_getNodeHTML(node, false), _getTreeHTML(tree, false), `Value of attribute '${attrName}' is not '${attrValue}'`, '!=')
+                    }
                 }
             }
         };
