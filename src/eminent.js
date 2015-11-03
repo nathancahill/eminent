@@ -153,7 +153,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
      * starting a recursive loop.
      */
     if (nodeChildren.length !== treeChildren.length) {
-        assert.fail(_getNodeHTML(node, true), _getTreeHTML(tree, true), `Different number of DOM child nodes`, '!=')
+        assert.fail(_getNodeHTML(node, true), _getTreeHTML(tree, true), `Expected ${treeChildren.length} child nodes but got ${nodeChildren.length}`, '!=')
     }
 
     for (let i in nodeChildren) {

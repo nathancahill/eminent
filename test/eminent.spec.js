@@ -71,7 +71,7 @@ describe('domIsLike', () => {
 
         assert.throws(() => {
             eminent.domIsLike(dom, 'table>tbody>tr*2>td*3')
-        }, /Different number of DOM child nodes/)
+        }, /Expected 2 child nodes but got 1/)
     });
 
     it('passes when dom has content but abbreviation does not', () => {
@@ -105,7 +105,7 @@ describe('domIsLike', () => {
 
         assert.throws(() => {
             eminent.domIsLike(dom, 'select>option*4');
-        }, /Different number of DOM child nodes/)
+        }, /Expected 4 child nodes but got 3/)
     });
 });
 
