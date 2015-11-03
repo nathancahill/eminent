@@ -1,4 +1,5 @@
 
+import blanket from 'blanket'
 import assert from 'assert'
 import * as eminent from '../src/eminent';
 
@@ -154,6 +155,14 @@ describe('domAttrsIsLike', () => {
         assert.throws(() => {
             eminent.domAttrsIsLike(dom, 'div#page>div.logo')
         }, /Attribute 'id' does not exist/)
+    });
+
+    it('does not include default attributes', () => {
+        let dom = `
+            <img />
+        `
+
+        eminent.domAttrsIsLike(dom, 'img')
     });
 });
 

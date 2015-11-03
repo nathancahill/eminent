@@ -1,11 +1,19 @@
 
+import emmet from 'emmet'
 import parser from 'emmet/lib/parser/abbreviation'
-import utils from 'emmet/lib/utils/common'
 import whitespace from 'dom-whitespace'
 import jsdom from 'jsdom'
 import assert from 'assert'
 
+import snippets from '../assets/snippets.json'
+
 /** @module eminent */
+
+/*
+ * Reset Emmet snippets to snippets without blank attributes
+ */
+emmet.resetSnippets()
+emmet.loadSnippets(snippets)
 
 /**
  *
@@ -112,7 +120,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
      * Emmet tree children. The text node must handle the counter object.
      */
     if (isContent && tree.content !== '' && tree._name !== '') {
-        let value = utils.replaceCounter(tree.content, tree.counter, tree.maxCount)
+        let value = emmet.utils.common.replaceCounter(tree.content, tree.counter, tree.maxCount)
 
         treeChildren.unshift({
             content: value,
