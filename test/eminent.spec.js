@@ -30,7 +30,7 @@ describe('domIs', () => {
 
         assert.throws(() => {
             eminent.domIs(dom, 'table>tbody>tr*2>td*3')
-        })
+        }, /DOM does not match Emmet abbreviation/)
     });
 });
 
@@ -71,7 +71,7 @@ describe('domIsLike', () => {
 
         assert.throws(() => {
             eminent.domIsLike(dom, 'table>tbody>tr*2>td*3')
-        })
+        }, /Different number of DOM child nodes/)
     });
 
     it('passes when dom has content but abbreviation does not', () => {
@@ -91,7 +91,21 @@ describe('domIsLike', () => {
 
         assert.throws(() => {
             eminent.domIsLike(dom, 'span>div')
-        })
+        }, /Expected 'span' but got 'div'/)
+    });
+
+    it('throws with a different number of child nodes', () => {
+        let dom = `
+            <select>
+                <option>2005</option>
+                <option>2006</option>
+                <option>2007</option>
+            </select>
+        `
+
+        assert.throws(() => {
+            eminent.domIsLike(dom, 'select>option*4');
+        }, /Different number of DOM child nodes/)
     });
 });
 
@@ -115,7 +129,7 @@ describe('domAttrsIs', () => {
 
         assert.throws(() => {
             eminent.domAttrsIs(dom, 'div#page>div.logo')
-        })
+        }, /Value of attribute 'id' is not 'page'/)
     });
 });
 
@@ -132,13 +146,14 @@ describe('domAttrsIsLike', () => {
 
     it('throws when attributes do not exist', () => {
         let dom = `
-            <div><div>
-            </div></div>
+            <div>
+                <div></div>
+            </div>
         `
 
         assert.throws(() => {
             eminent.domAttrsIsLike(dom, 'div#page>div.logo')
-        })
+        }, /Attribute 'id' does not exist/)
     });
 });
 
@@ -164,7 +179,7 @@ describe('domContentIs', () => {
 
         assert.throws(() => {
             eminent.domContentIs(dom, 'div{Hello world}>div{Testing}')
-        })
+        }, /DOM element content does not match/)
     });
 
     it('passes with two elements with content', () => {

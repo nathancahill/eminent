@@ -7,6 +7,21 @@ import assert from 'assert'
 
 /** @module eminent */
 
+/**
+ *
+ * @private
+ * @param  {nodelist} collection - DOM collection node list
+ * @return {array}
+ */
+let _collectionToArray = collection => {
+    let ary = [];
+
+    for (let node of collection) {
+        ary.push(node);
+    }
+
+    return ary;
+}
 
 /**
  * @private
@@ -18,8 +33,8 @@ let _getNodeHTML = (node, children) => {
     if (!children) {
         node.innerHTML = '';
     } else {
-        for (var i = 0; i < node._childNodes.length; i++) {
-            node._childNodes[i].innerHTML = '';
+        for (let child of node.childNodes) {
+            child.innerHTML = '';
         };
     }
 
@@ -54,8 +69,7 @@ let _getTreeHTML = (tree, children) => {
  * @param  {boolean} isContent - Compare content
  */
 let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
-    let i,
-        nodeChildren = node._childNodes,
+    let nodeChildren = _collectionToArray(node.childNodes),
         treeChildren = tree.children,
         isText = node._localName === undefined,
         isBody = node._localName === 'body';
@@ -74,9 +88,9 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
     }
 
     if (hasAttrs || isAttrs && !isBody) {
-        for (i = 0; i < tree._attributes.length; i++) {
-            let attrName = tree._attributes[i].name,
-                attrValue = tree._attributes[i].value;
+        for (let attribute of tree._attributes) {
+            let attrName = attribute.name,
+                attrValue = attribute.value;
 
             if (hasAttrs) {
                 if (!node.hasAttribute(attrName)) {
@@ -134,7 +148,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
         assert.fail(_getNodeHTML(node, true), _getTreeHTML(tree, true), `Different number of DOM child nodes`, '!=')
     }
 
-    for (i = 0; i < nodeChildren.length; i++) {
+    for (let i in nodeChildren) {
         compareNode(nodeChildren[i], treeChildren[i], hasAttrs, isAttrs, isContent);
     };
 }
