@@ -1,5 +1,4 @@
 
-import blanket from 'blanket'
 import assert from 'assert'
 import * as eminent from '../src/eminent';
 
