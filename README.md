@@ -9,7 +9,7 @@ let html = `
   <table>
     <tbody>
       <tr>
-        <td>Kahlua</td>
+        <td>Eminent</td>
         <td>is</td>
         <td>awesome</td>
       </tr>
