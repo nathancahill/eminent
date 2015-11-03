@@ -1,6 +1,6 @@
 {
   "name": "eminent",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A DOM assertions library with Emmet syntax for JavaScript testing",
   "main": "lib/eminent.js",
   "scripts": {
