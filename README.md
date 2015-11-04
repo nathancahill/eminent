@@ -1,6 +1,7 @@
 ## Eminent
 
 [![Build Status](https://travis-ci.org/nathancahill/eminent.svg?branch=master)](https://travis-ci.org/nathancahill/eminent)
+[![Coverage Status](https://coveralls.io/repos/nathancahill/eminent/badge.svg?branch=master&service=github)](https://coveralls.io/github/nathancahill/eminent?branch=master)
 
 Eminent is a DOM assertions library with [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/) for JavaScript testing.
 
