@@ -39,11 +39,11 @@ let _collectionToArray = collection => {
  */
 let _getNodeHTML = (node, children) => {
     if (!children) {
-        node.innerHTML = '';
+        node.innerHTML = ''
     } else {
         for (let child of node.childNodes) {
-            child.innerHTML = '';
-        };
+            child.innerHTML = ''
+        }
     }
 
     return node.outerHTML;
@@ -60,10 +60,11 @@ let _getTreeHTML = (tree, children) => {
 
     if (children) {
         let childrenAbbrs = tree.children.map(child => child.abbreviation).join('+');
+
         abbr = abbr + '>' + childrenAbbrs;
     }
 
-    return parser.expand(abbr, {profile: 'plain'});
+    return parser.expand(abbr, {profile: 'plain'})
 }
 
 /**
@@ -119,7 +120,7 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
                     }
                 }
             }
-        };
+        }
     }
 
     /*
@@ -136,14 +137,14 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
             content: value,
             children: [],
             _name: ''
-        });
+        })
     }
 
     /*
      * Discard text child nodes if not checking for content.
      */
     if (!isContent) {
-        nodeChildren = nodeChildren.filter(child => child._localName !== undefined);
+        nodeChildren = nodeChildren.filter(child => child._localName !== undefined)
     }
 
     /*
@@ -167,8 +168,8 @@ let compareNode = (node, tree, hasAttrs, isAttrs, isContent) => {
     }
 
     for (let i in nodeChildren) {
-        compareNode(nodeChildren[i], treeChildren[i], hasAttrs, isAttrs, isContent);
-    };
+        compareNode(nodeChildren[i], treeChildren[i], hasAttrs, isAttrs, isContent)
+    }
 }
 
 /**
