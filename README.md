@@ -4,21 +4,19 @@
 
 Eminent is a DOM assertions library with [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/) for JavaScript testing.
 
-```javascript
-let html = `
-  <table>
-    <tbody>
-      <tr>
-        <td>Eminent</td>
-        <td>is</td>
-        <td>awesome</td>
-      </tr>
-    </tbody>
-  </table>
-`
+```js
+describe('eminent', () => {
+	it('uses easy to read abbreviations to verify DOM', () => {
+		eminent.domIsLike(html, 'select>option*3')
+	})
 
-eminent.domIsLike(html, 'table>tbody>tr>td*3')
+	it('intelligently compares attributes and content', () => {
+		eminent.domAttrsIsLike(html, 'div.header.logo')
+	})
+})
 ```
+
+![Screenshot](http://i.imgur.com/vTjyfDK.png)
 
 ## Installation
 
