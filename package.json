@@ -4,7 +4,9 @@
   "description": "A DOM assertions library with Emmet syntax for JavaScript testing",
   "main": "lib/eminent.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register",
+    "lint": "eslint src/*.js",
+    "test": "npm run lint && nyc mocha --compilers js:babel-core/register",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "build": "babel src/ -d lib/",
     "docs": "jsdoc2md --template jsdoc2md/README.hbs lib/eminent.js > README.md"
   },
@@ -25,13 +27,19 @@
   "bugs": {
     "url": "https://github.com/nathancahill/eminent/issues"
   },
+  "engines": {
+    "node": ">=4"
+  },
   "homepage": "https://github.com/nathancahill/eminent#readme",
   "devDependencies": {
     "babel": "^6.0.12",
     "babel-cli": "^6.0.14",
     "babel-core": "^6.0.14",
     "babel-preset-es2015": "^6.0.14",
-    "mocha": "^2.3.3"
+    "coveralls": "^2.11.4",
+    "eslint": "^1.8.0",
+    "mocha": "^2.3.3",
+    "nyc": "^3.2.2"
   },
   "dependencies": {
     "dom-whitespace": "^0.1.2",
