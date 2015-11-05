@@ -17,7 +17,8 @@ describe('eminent', () => {
 })
 ```
 
-![Screenshot](http://i.imgur.com/vTjyfDK.png)
+![Screenshot](http://i.imgur.com/usTPpPa.png)
+
 
 ## Installation
 
