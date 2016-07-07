@@ -1,0 +1,321 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Eminent by nathancahill</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Eminent</h1>
+        <p>A DOM assertions library with Emmet syntax for JavaScript testing</p>
+
+        <p class="view"><a href="https://github.com/nathancahill/eminent">View the Project on GitHub <small>nathancahill/eminent</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/nathancahill/eminent/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/nathancahill/eminent/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/nathancahill/eminent">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a id="eminent" class="anchor" href="#eminent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Eminent</h2>
+
+<p><a href="https://travis-ci.org/nathancahill/eminent"><img src="https://travis-ci.org/nathancahill/eminent.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/nathancahill/eminent?branch=master"><img src="https://coveralls.io/repos/nathancahill/eminent/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
+
+<p>Eminent is a DOM assertions library with <a href="http://docs.emmet.io/abbreviations/syntax/">Emmet syntax</a> for JavaScript testing.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> {
+    <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>uses easy to read abbreviations to verify DOM<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> {
+        <span class="pl-smi">eminent</span>.<span class="pl-en">domIsLike</span>(html, <span class="pl-s"><span class="pl-pds">'</span>select&gt;option*3<span class="pl-pds">'</span></span>)
+    })
+
+    <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>intelligently compares attributes and content<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> {
+        <span class="pl-smi">eminent</span>.<span class="pl-en">domAttrsIsLike</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div.header.logo<span class="pl-pds">'</span></span>)
+    })
+})</pre></div>
+
+<p><img src="http://i.imgur.com/usTPpPa.png" alt="Screenshot"></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>$ npm install eminent
+</code></pre>
+
+<h2>
+<a id="api-reference" class="anchor" href="#api-reference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Reference</h2>
+
+<p><a name="module_eminent.domIs"></a></p>
+
+<h3>
+<a id="eminentdomisdom-abbr" class="anchor" href="#eminentdomisdom-abbr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>eminent.domIs(dom, abbr)</h3>
+
+<p>Strictly compare DOM to Emmet abbreviation.</p>
+
+<p><strong>Kind</strong>: static method of <code><a href="#module_eminent">eminent</a></code><br>
+<strong>Throws</strong>:</p>
+
+<ul>
+<li>
+<code>exception</code> When DOM does not strictly match the Emmet abbreviation</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dom</td>
+<td><code>string</code></td>
+<td>DOM string</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td><code>string</code></td>
+<td>Emmet abbreviation to compare to</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example</strong>  </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">eminent</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>
+
+<span class="pl-k">let</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;div id="header"&gt;&lt;div class="logo"&gt;Company&lt;/div&gt;&lt;/div&gt;<span class="pl-pds">'</span></span>
+
+<span class="pl-smi">eminent</span>.<span class="pl-en">domIs</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div#header&gt;div.logo{Company}<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><a name="module_eminent.domIsLike"></a></p>
+
+<h3>
+<a id="eminentdomislikedom-abbr" class="anchor" href="#eminentdomislikedom-abbr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>eminent.domIsLike(dom, abbr)</h3>
+
+<p>Compare DOM to Emmet abbreviation.
+Ignores whitespace, attributes and content.</p>
+
+<p><strong>Kind</strong>: static method of <code><a href="#module_eminent">eminent</a></code><br>
+<strong>Throws</strong>:</p>
+
+<ul>
+<li>
+<code>exception</code> When DOM does not loosely match the Emmet abbreviation</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dom</td>
+<td><code>string</code></td>
+<td>DOM string</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td><code>string</code></td>
+<td>Emmet abbreviation to compare to</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example</strong>  </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">eminent</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>
+
+<span class="pl-k">let</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">`</span></span>
+<span class="pl-s">    &lt;div id="header"&gt;</span>
+<span class="pl-s">        &lt;div class="logo"&gt;</span>
+<span class="pl-s">            Company</span>
+<span class="pl-s">        &lt;/div&gt;</span>
+<span class="pl-s">    &lt;/div&gt;</span>
+<span class="pl-s"><span class="pl-pds">`</span></span>
+
+<span class="pl-smi">eminent</span>.<span class="pl-en">domIsLike</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div&gt;div<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><a name="module_eminent.domAttrsIs"></a></p>
+
+<h3>
+<a id="eminentdomattrsisdom-abbr" class="anchor" href="#eminentdomattrsisdom-abbr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>eminent.domAttrsIs(dom, abbr)</h3>
+
+<p>Compare DOM to Emmet abbreviation, including attribute names and values.
+Ignores whitespace and content.</p>
+
+<p><strong>Kind</strong>: static method of <code><a href="#module_eminent">eminent</a></code><br>
+<strong>Throws</strong>:</p>
+
+<ul>
+<li>
+<code>exception</code> When DOM does not loosely match the Emmet abbreviation, including attribute names and values.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dom</td>
+<td><code>string</code></td>
+<td>DOM string</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td><code>string</code></td>
+<td>Emmet abbreviation to compare to</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example</strong>  </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">eminent</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>
+
+<span class="pl-k">let</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">`</span></span>
+<span class="pl-s">    &lt;div id="header"&gt;</span>
+<span class="pl-s">        &lt;div class="logo"&gt;</span>
+<span class="pl-s">            Company</span>
+<span class="pl-s">        &lt;/div&gt;</span>
+<span class="pl-s">    &lt;/div&gt;</span>
+<span class="pl-s"><span class="pl-pds">`</span></span>
+
+<span class="pl-smi">eminent</span>.<span class="pl-en">domAttrsIs</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div#header&gt;div.logo<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><a name="module_eminent.domAttrsIsLike"></a></p>
+
+<h3>
+<a id="eminentdomattrsislikedom-abbr" class="anchor" href="#eminentdomattrsislikedom-abbr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>eminent.domAttrsIsLike(dom, abbr)</h3>
+
+<p>Compare DOM to Emmet abbreviation, including attribute names.
+Ignores whitespace, attribute values and content.</p>
+
+<p><strong>Kind</strong>: static method of <code><a href="#module_eminent">eminent</a></code><br>
+<strong>Throws</strong>:</p>
+
+<ul>
+<li>
+<code>exception</code> When DOM does not loosely match the Emmet abbreviation, including attribute names.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dom</td>
+<td><code>string</code></td>
+<td>DOM string</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td><code>string</code></td>
+<td>Emmet abbreviation to compare to</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example</strong>  </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">eminent</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>
+
+<span class="pl-k">let</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">`</span></span>
+<span class="pl-s">    &lt;div id="header"&gt;</span>
+<span class="pl-s">        &lt;div class="logo"&gt;</span>
+<span class="pl-s">            Company</span>
+<span class="pl-s">        &lt;/div&gt;</span>
+<span class="pl-s">    &lt;/div&gt;</span>
+<span class="pl-s"><span class="pl-pds">`</span></span>
+
+<span class="pl-smi">eminent</span>.<span class="pl-en">domAttrsIsLike</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div#id&gt;div.class<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><a name="module_eminent.domContentIs"></a></p>
+
+<h3>
+<a id="eminentdomcontentisdom-abbr" class="anchor" href="#eminentdomcontentisdom-abbr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>eminent.domContentIs(dom, abbr)</h3>
+
+<p>Compare DOM to Emmet abbreviation, including content.
+Ignores whitespace and attributes.</p>
+
+<p><strong>Kind</strong>: static method of <code><a href="#module_eminent">eminent</a></code><br>
+<strong>Throws</strong>:</p>
+
+<ul>
+<li>
+<code>exception</code> When DOM does not loosely match the Emmet abbreviation, including content.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dom</td>
+<td><code>string</code></td>
+<td>DOM string</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td><code>string</code></td>
+<td>Emmet abbreviation to compare to</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Example</strong>  </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">eminent</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>eminent<span class="pl-pds">'</span></span>
+
+<span class="pl-k">let</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">`</span></span>
+<span class="pl-s">    &lt;div id="header"&gt;</span>
+<span class="pl-s">        &lt;div class="logo"&gt;</span>
+<span class="pl-s">            Company</span>
+<span class="pl-s">        &lt;/div&gt;</span>
+<span class="pl-s">    &lt;/div&gt;</span>
+<span class="pl-s"><span class="pl-pds">`</span></span>
+
+<span class="pl-smi">eminent</span>.<span class="pl-en">domContentIs</span>(html, <span class="pl-s"><span class="pl-pds">'</span>div#header&gt;div.logo{Company}<span class="pl-pds">'</span></span>)</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/nathancahill">nathancahill</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
